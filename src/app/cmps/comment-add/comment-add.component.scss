@@ -2,4 +2,11 @@
     background-color: #ffffff;
     padding: 15px;
     border-radius: 7px;
+    margin-top: 10px;
+
+    &.reply {
+        position: relative;
+        left: 35px;
+        margin-right: 35px;
+    }
 }

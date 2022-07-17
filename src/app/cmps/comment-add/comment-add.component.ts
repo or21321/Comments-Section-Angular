@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Comment, CommentAddObj } from 'src/app/models/comment';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -9,9 +10,11 @@ import { User } from 'src/app/models/user';
 export class CommentAddComponent implements OnInit {
 
   @Input() loggedUser: User | null = null
-  @Input() newComment: any | null = null
+  @Input() newComment: Comment | null = null
+  @Input() isReply: boolean = false
+  @Input() parentCommentId: string | number | null | undefined = null
 
-  @Output() commentAdded = new EventEmitter<string>()
+  @Output() commentAdded = new EventEmitter<CommentAddObj>()
 
   constructor() { }
 
@@ -19,7 +22,9 @@ export class CommentAddComponent implements OnInit {
   }
 
   addComment(txt: string) {
-    this.commentAdded.emit(txt)
+    const parentCommentId = this.parentCommentId
+    console.log('HEYYYY', parentCommentId);
+    this.commentAdded.emit({ txt, parentCommentId })
   }
 
 }

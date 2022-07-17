@@ -216,18 +216,18 @@ export class CommentService {
 
   }
 
-  private _addComment(comment: Comment) {
+  private _addComment(comment: Comment): Observable<Comment> {
     //mock the server work
     const { parentCommentId, ownerId, txt, createdAt, deletedAt }: {
       parentCommentId: undefined | number | string | null,
       ownerId: string | number, txt: string,
       createdAt: string, deletedAt: string | null
     } = comment
-    
+
     const newComment = new Comment(parentCommentId, ownerId,
       txt, createdAt, deletedAt);
     // TS Fix:
-    if (!newComment.setId) return
+    if (!newComment.setId) return throwError('Couldnt add comment ')
     newComment.setId();
     console.log('newComment', newComment);
 

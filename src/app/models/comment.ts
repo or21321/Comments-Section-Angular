@@ -41,3 +41,8 @@ export class Comment {
 
 
 export type Comments = Comment[]
+
+export interface CommentAddObj {
+    txt: string
+    parentCommentId: string | number | null | undefined
+}

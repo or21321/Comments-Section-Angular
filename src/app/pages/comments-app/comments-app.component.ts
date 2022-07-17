@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Comment, Comments } from 'src/app/models/comment';
+import { Comment, CommentAddObj, Comments } from 'src/app/models/comment';
 import { User, Users } from 'src/app/models/user';
 import { CommentService } from 'src/app/services/comment.service';
 import { UserService } from 'src/app/services/user.service';
@@ -36,12 +36,12 @@ export class CommentsAppComponent implements OnInit {
   }
 
   async commentUpdated(comment: Comment) {
-    // try {
-    //   console.log('commentUpdated', comment);
-    //   await this.commentService.saveComment(comment).toPromise()
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      console.log('commentUpdated', comment);
+      await this.commentService.saveComment(comment).toPromise()
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   commentRemoved(id: number | string) {
@@ -49,16 +49,18 @@ export class CommentsAppComponent implements OnInit {
     this.commentService.removeComment(id)
   }
 
-  commentAdded(txt: string) {
-    console.log('txt', txt);
-    console.log('loggedUser', this.loggedUser);
+  commentAdded(commentAddObj: CommentAddObj) {
+    console.log('HEY');
+    const { txt, parentCommentId } = commentAddObj
+    console.log('parentCommentId', parentCommentId);
     // TS Fix:
     if (!this.loggedUser) return
 
     const newComment: Comment = {
-      parentCommentId: null, ownerId: this.loggedUser?.id, txt, 
+      parentCommentId: parentCommentId || null, ownerId: this.loggedUser?.id, txt,
       createdAt: '' + Date.now(), deletedAt: ''
     }
+
     this.commentService.saveComment(newComment)
   }
 

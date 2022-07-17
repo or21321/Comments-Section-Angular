@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Comment } from 'src/app/models/comment';
+import { Comment, CommentAddObj } from 'src/app/models/comment';
 import { User } from 'src/app/models/user';
 
 @Component({
@@ -14,8 +14,10 @@ export class CommentPreviewComponent implements OnInit {
 
   @Output() commentUpdated = new EventEmitter<Comment>()
   @Output() commentRemoved = new EventEmitter<number | string>()
+  @Output() replyAdded = new EventEmitter<CommentAddObj>()
 
   isEditOn: boolean = false
+  isReplyOn: boolean = false
 
   constructor() { }
 
@@ -37,5 +39,5 @@ export class CommentPreviewComponent implements OnInit {
   get isLoggedUserComment(): boolean {
     return this.loggedUser?.id == this.comment?.ownerId
   }
-
+  
 }

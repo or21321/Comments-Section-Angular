@@ -1,4 +1,4 @@
 <ul [class]="{replies: isReplies}" class="comment-list flex direction-column">
-    <comment-preview (commentRemoved)="commentRemoved.emit($event)" (commentUpdated)="commentUpdated.emit($event)" *ngFor="let comment of comments"
+    <comment-preview (replyAdded)="replyAdded.emit($event)" (commentRemoved)="commentRemoved.emit($event)" (commentUpdated)="commentUpdated.emit($event)" *ngFor="let comment of comments"
         [loggedUser]="loggedUser" [comment]="comment"></comment-preview>
 </ul>
