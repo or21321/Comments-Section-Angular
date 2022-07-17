@@ -1,0 +1,38 @@
+// COLOR PALETTE
+$white: hsl(0, 0%, 100%);
+$very-dark-blue: hsl(200, 15%, 8%);
+$very-light-gray: hsl(0, 0%, 98%);
+$clr1: #61210f;
+$clr2: #ea2b1f;
+$clr3: #edae49;
+$clr4: #f9df74;
+$clr5: #f9edcc;
+
+// .app-header{
+//     background-color: $white;
+// }
+$darken: #1918186b;
+// $clr6: #d2af26;
+// $clr7: #1e1c1c;
+// $clr1: #ff521c;
+// $clr2: #000;
+// $clr3: #fff;
+// $clr4: darken($clr3, 40%);
+// $clr5: #2d2d2d;
+// $clr6: #d2af26;
+// $clr7: #1e1c1c;
+// $darken: #1918186b;
+
+// LAYOUT
+$layoutPadding: 50px;
+
+// LAYOUT BREAKPOINTS
+$break-small-mobile: 500px;
+$break-wide-mobile: 650px;
+$break-narrow: 1100px;
+$break-normal: 1360px;
+$break-wide: 1920px;
+
+$padded-break-narrow: $break-narrow + $layoutPadding * 2;
+$padded-break-normal: $break-normal + $layoutPadding * 2;
+$padded-break-wide: $break-wide + $layoutPadding * 2;

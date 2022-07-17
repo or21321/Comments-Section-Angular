@@ -1,0 +1,131 @@
+::selection {
+    background-color: $clr1;
+    color: $clr3;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    line-height: lh(26px);
+    height: 100%;
+    color: $very-dark-blue;
+}
+
+body {
+    font-family: "Josefin Sans", sans-serif;
+    margin: 0;
+    height: 100%;
+}
+
+#root {
+    height: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 500;
+    margin: 0 0 1rem;
+    line-height: lh(40px, 29px);
+}
+
+h1 {
+    font-size: rem(60px);
+}
+
+img {
+    width: 100%;
+}
+
+p {
+    margin: 0;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+button:hover {
+    cursor: pointer;
+}
+
+.btn {
+    @include btn;
+
+    &-dark {
+        @include btn($type: dark);
+    }
+
+    &-light {
+        @include btn($type: light);
+    }
+
+    &-premium {
+        @include btn($type: premium);
+    }
+
+    &-submit {
+        @include btn($type: submit);
+    }
+}
+
+// links
+a {
+    color: $clr1;
+    text-decoration: none;
+    &.router-link-active {
+        color: $clr3;
+    }
+    // &.active {
+    //     color: $clr1;
+    // }
+}
+
+.notificator {
+    // margin: 40px 10px 0 0;
+    background-color: $clr3;
+    color: $clr1;
+    border: none;
+}
+
+.slide-leave-active {
+    // transform: translateX(0);
+    transition: all 0.3s linear;
+}
+.slide-enter-active {
+    transition: all 0.7s linear;
+}
+
+.slide-enter-from {
+    transform: translateX(100%);
+}
+.slide-leave-to {
+    transform: translateX(100%);
+}
+
+.menu-leave-active {
+    // transform: translateX(0);
+    transition: all 0.4s linear;
+}
+.menu-enter-active {
+    transition: all 0.7s linear;
+}
+
+.menu-enter-from {
+    transform: translateY(30%);
+}
+.menu-leave-to {
+    transform: translateY(10%);
+}
+
+// mark {
+//     color: $clr1;
+//     background-color: transparent;
+// }
