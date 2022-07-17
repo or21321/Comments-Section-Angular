@@ -1,6 +1,9 @@
-<header class="app-header">
-    <select [(ngModel)]="loggedUser" (ngModelChange)="onUserSelect()">
-        <option value="null">Select User</option>
-        <option *ngFor="let user of users" [value]="user.id">{{user.displayName}}</option>
-    </select>
-</header>
+<div class="app-header-container main-layout align-center">
+    <header class="app-header flex align-center">
+        <select [(ngModel)]="loggedUserId" (ngModelChange)="selectUser()">
+            <option value="null">Select User</option>
+            <option *ngFor="let user of users" [value]="user.id">{{user.displayName}}</option>
+        </select>
+        <img class="user-img" *ngIf="loggedUser" [src]="'../../../assets/users/' + loggedUser.id + '.jpg'">
+    </header>
+</div>

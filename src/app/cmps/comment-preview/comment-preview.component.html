@@ -1,3 +1,25 @@
-<li class="comment-preview">
-    {{comment?.txt}}
-</li>
+<section class="comment-preview-container">
+    <li class="comment-preview">
+        <header class="flex justify-between">
+            <div class="comment-info flex align-center">
+                <img class="user-img" [src]="'../../../assets/users/' + comment?.miniUser?.id + '.jpg'">
+                <span class="display-name">{{comment?.miniUser?.displayName}}</span>
+                <span>Pipe</span>
+            </div>
+            <button *ngIf="loggedUser && !isLoggedUserComment" class="action-btn">Reply</button>
+            <div *ngIf="isLoggedUserComment" class="user-actions">
+                <button class="action-btn delete" (click)="commentRemoved.emit(comment?.id)">Delete</button>
+                <button class="action-btn" (click)="isEditOn = true">Edit</button>
+            </div>
+        </header>
+        <p *ngIf="!isEditOn; else contenteditable">{{comment?.txt}}</p>
+        <ng-template #contenteditable>
+            <p class="contenteditable" contenteditable #p>{{comment?.txt}}</p>
+            <button (click)="onTxtUpdate(p)">UPDATE</button>
+        </ng-template>
+
+    </li>
+    <comment-list *ngIf="comment?.replies?.length" [isReplies]="true" [loggedUser]="loggedUser"
+        [comments]="comment?.replies">
+    </comment-list>
+</section>

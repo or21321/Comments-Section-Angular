@@ -1,6 +1,7 @@
 .main-layout {
     display: grid;
-    grid-template-columns: $layoutPadding 1fr $layoutPadding;
+    // grid-template-columns: $layoutPadding 1fr $layoutPadding;
+    grid-template-columns: 1fr 50% 1fr;
     // justify-items: center;
 
     > * {
@@ -24,17 +25,17 @@
     //     grid-template-columns: repeat( 6, 1fr );
     // }
 
-    @include for-narrow-layout {
-        @include layoutGTC($break-narrow);
-    }
+    // @include for-narrow-layout {
+    //     @include layoutGTC($break-narrow);
+    // }
 
-    @include for-normal-layout {
-        @include layoutGTC($break-normal);
-    }
+    // @include for-normal-layout {
+    //     @include layoutGTC($break-normal);
+    // }
 
-    @include for-wide-layout {
-        @include layoutGTC($break-wide);
-    }
+    // @include for-wide-layout {
+    //     @include layoutGTC($break-wide);
+    // }
 }
 
 .reponsive-list {

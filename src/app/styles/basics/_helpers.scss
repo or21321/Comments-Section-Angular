@@ -1,14 +1,19 @@
 // Flex
-.flex {
+.flex{
     display: flex;
+}
+.justify-center {
+    justify-content: center;
+}
+.direction-column {
+    flex-direction: column;
+}
+.grow {
+    flex-grow: 1;
 }
 
 .justify-center {
     justify-content: center;
-}
-
-.justify-between {
-    justify-content: space-between;
 }
 
 .justify-between {
@@ -107,4 +112,8 @@
         left: 50%;
         transform: translate(-50%, -50%);
     }
+}
+
+img.user-img{
+    width: 30px;
 }

@@ -1,3 +1,5 @@
-<section class="comment-app">
-    <comment-list [comments]="comments$ | async"></comment-list>
+<section class="comment-app main-layout">
+    <comment-list (commentRemoved)="commentRemoved($event)" (commentUpdated)="commentUpdated($event)"
+        [loggedUser]="loggedUser" [comments]="comments$ | async"></comment-list>
+        <comment-add [newComment]="newComment" (commentAdded)="commentAdded($event)" *ngIf="loggedUser" [loggedUser]="loggedUser"></comment-add>
 </section>

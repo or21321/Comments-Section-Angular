@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, tap } from 'rxjs/operators'
+import { BehaviorSubject, from, Observable, of, throwError } from 'rxjs';
+import { concatMap, map, mergeMap, tap } from 'rxjs/operators'
 import { Comment, Comments } from '../models/comment';
 import { CommentFilter } from '../models/comment-filter';
 import { UtilService } from './util.service';
+import { User, Users } from '../models/user';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,13 +15,42 @@ export class CommentService {
   //mock the server
   private _commentsDb: Comment[] = []
 
-  private _comments$ = new BehaviorSubject<Comment[]>([])
-  public comments$ = this._comments$.asObservable()
+  private _comments$ = new BehaviorSubject<Comments>([])
+  public comments$ = this._comments$.asObservable().pipe(
+    map(comments => this._getCommentsWithUsers(comments)),
+    map(comments => this._getCommentsWithHierarchy(comments))
+    // map(comments => this._getCommentsWithHierarchy(comments))
+  )
+  // .pipe(
+  // concatMap((arr) => from(arr)),
+  // concatMap((arr) => from(arr)),
+  // mergeMap(async comment => {
+  //   const miniUser = await this._getMiniUser(comment.ownerId)
+  //   const commentWithUser: Comment = { ...comment, miniUser }
+  //   return commentWithUser
+  // })
+  // )
+  // .pipe(
+  //   )
+  //   mergeMap(async (comment) => {
+  //   console.log('comment', comment);
+  //   return comment
+  // })
+  // )
+  // mergeMap(async (comments) => {
+  // console.log('comments', comments);
+  // return comments
+  //   return comments.map(async (comment) => {
+  //     const miniUser = await this._getMiniUser(comment.ownerId)
+  //     const commentWithUser: Comment = { ...comment, miniUser }
+  //     return commentWithUser
+  //   })
+  // })
   //filter
   private _filterBy$ = new BehaviorSubject<CommentFilter>({ region: 'all', txt: '' })
   public filterBy$ = this._filterBy$.asObservable()
 
-  constructor(private http: HttpClient, private utilService: UtilService) {
+  constructor(private http: HttpClient, private utilService: UtilService, private userService: UserService) {
   }
 
 
@@ -41,8 +72,85 @@ export class CommentService {
     // this._comments$.next(this._sort(comments))
   }
 
+  private _getCommentsWithHierarchy(comments: Comments): Comments {
+    const commentsWithHierarchy: Comments = []
+    const commentsCopy: Comments = JSON.parse(JSON.stringify(comments))
+    // Build first node:
+    commentsCopy.forEach((comment) => {
+      // Create replies for each comment (could be better inside the pipe)
+      comment.replies = []
+      const { parentCommentId } = comment
+      if (!parentCommentId) {
+        commentsWithHierarchy.push(comment)
+        const idx = commentsCopy.findIndex(c => c.id === comment.id)
+        commentsCopy.splice(idx, 1)
+      }
+    })
+
+    let count = 0
+    while (commentsCopy.length && count < 50) {
+      commentsCopy.forEach(comment => {
+        // Two problems here: using any & support a specific depth of replies instead of using a recursion
+        let parentComment: any
+        if (!parentComment) {
+          commentsWithHierarchy.forEach(c => {
+            if (c.id === comment.parentCommentId) parentComment = c
+            else if (c?.replies?.length) {
+              c.replies.forEach(reply => {
+                if (reply.id === comment.parentCommentId) parentComment = c
+                else if (reply?.replies?.length) {
+                  reply.replies.forEach(reply => {
+                    if (reply.id === comment.parentCommentId) parentComment = c
+                  })
+                }
+              })
+            }
+
+          })
+        }
+
+        if (!parentComment) return
+        parentComment.replies?.push(comment)
+
+        const childCommentIdx = commentsCopy.findIndex(c => c.id === comment.id)
+        commentsCopy.splice(childCommentIdx, 1)
+      })
+      count++
+    }
+
+    console.log('commentsWithHierarchy', commentsWithHierarchy);
+    console.log(count, comments);
+
+    return commentsWithHierarchy
+  }
+  private _getCommentsWithUsers(comments: Comments) {
+    let users: Users
+    this.userService.users$.subscribe(_ => users = _)
+
+    return comments.map((comment) => {
+      const miniUser = users?.find(user => user.id == comment.ownerId)
+      const commentWithUser: Comment = { ...comment, miniUser }
+
+      return commentWithUser
+    })
+  }
+
   private _getCommentsFromJson() {
-    this.http.get<Array<Comment>>('assets/data/comments.json').pipe(
+    this.http.get<Comments>('assets/data/comments.json').pipe(
+      // map(comments => this._getCommentsWithUsers(comments)),
+      // map(comments => this._getCommentsWithHierarchy(comments))
+      // map((comments: Comments): Comments => {
+      //   return comments.map((comment) => {
+      //     // const miniUser = this._getMiniUser(comment.ownerId)
+      //     const miniUser: User = { id: 1, displayName: 'Bruv' }
+      //     const commentWithUser: Comment = {
+      //       ...comment, miniUser
+      //     }
+      //     console.log('commentWithUser', commentWithUser);
+      //     return commentWithUser
+      //   })
+      //   // return comments
+      // })
       // map((comments: Array<object>) => {
       //   return comments.filter((_, idx) => idx < amount)
       //     .map(comment => comment)
@@ -69,18 +177,34 @@ export class CommentService {
     return of(comment) //: Promise.resolve(null)//Observable.throw(`Comment id ${id} not found!`)
   }
 
-  public removeComment(id: number) {
+  public removeComment(id: number | string) {
     //mock the server work
-    this._commentsDb = this._commentsDb.filter(comment => comment.id !== id)
+
+    console.log('this._commentsDb', this._commentsDb);
+    this._commentsDb = this._commentsDb.filter(comment => {
+      // console.log(comment.id !== id);
+      // console.log(comment.parentCommentId === id);
+      console.log(comment.parentCommentId, id);
+      console.log(comment.parentCommentId === id);
+
+
+      return (comment.id !== id)
+    })
+    console.log('this._commentsDb', this._commentsDb);
 
     this._sendComments(this._commentsDb)
     this._saveCommentsToStorage()
   }
 
   public saveComment(comment: Comment) {
-    console.log('save comment', comment);
+    try {
+      console.log('save comment', comment);
 
-    return comment.id ? this._updateComment(comment) : this._addComment(comment)
+      return comment.id ? this._updateComment(comment) : this._addComment(comment)
+    } catch (err) {
+      console.log(err);
+      throw err
+    }
   }
 
   private _updateComment(comment: Comment) {
@@ -94,16 +218,25 @@ export class CommentService {
 
   private _addComment(comment: Comment) {
     //mock the server work
+    const { parentCommentId, ownerId, txt, createdAt, deletedAt }: {
+      parentCommentId: undefined | number | string | null,
+      ownerId: string | number, txt: string,
+      createdAt: string, deletedAt: string | null
+    } = comment
+    
+    const newComment = new Comment(parentCommentId, ownerId,
+      txt, createdAt, deletedAt);
+    // TS Fix:
+    if (!newComment.setId) return
+    newComment.setId();
+    console.log('newComment', newComment);
 
-    // const newComment = new Comment(comment.name, comment.email, comment.phone);
-    // newComment.setId();
-
-    // this._commentsDb.push({ ...newComment })
+    this._commentsDb.push({ ...newComment })
 
     // this._comments$.next(this._sort(this._commentsDb))
     this._sendComments(this._commentsDb)
     this._saveCommentsToStorage()
-    return of(comment)
+    return of(newComment)
   }
 
 
@@ -150,5 +283,12 @@ export class CommentService {
 
   private _sendComments(comments: Comments) {
     this._comments$.next(comments)
+  }
+}
+
+class CommentClass {
+
+  constructor(private txt: string) {
+
   }
 }

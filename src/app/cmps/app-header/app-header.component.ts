@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User, Users } from 'src/app/models/user';
 
 @Component({
@@ -9,16 +9,20 @@ import { User, Users } from 'src/app/models/user';
 export class AppHeaderComponent implements OnInit {
 
   @Input() users: Users | null = null
+  @Input() loggedUser: User | null = null
+  @Output() onUserSelect = new EventEmitter<number | null>()
 
-  loggedUser: User | null = null
+  loggedUserId: number | null = null
+
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  onUserSelect() {
-    console.log('onUserSelect', this.loggedUser);
+  selectUser() {
+    console.log(this.loggedUserId);
+    this.onUserSelect.emit(this.loggedUserId)
   }
 
 }

@@ -1,0 +1,15 @@
+.comment-list {
+    gap: 10px;
+    margin-bottom: 10px;
+
+    &.replies {
+        position: relative;
+        top: 10px;
+        left: 35px;
+        margin-right: 35px;
+
+        & > :last-child {
+            margin-bottom: 10px;
+        }
+    }
+}

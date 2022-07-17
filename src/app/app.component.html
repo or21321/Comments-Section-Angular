@@ -1,2 +1,3 @@
-<app-header [users]="users$ | async"></app-header>
-<comments-app></comments-app>
+<app-header (onUserSelect)="onUserSelect($event)" [loggedUser]="loggedUser$ | async" [users]="users$ | async">
+</app-header>
+<comments-app [loggedUser]="loggedUser$ | async" [users]="users$ | async"></comments-app>

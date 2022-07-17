@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Comments } from 'src/app/models/comment';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Comment, Comments } from 'src/app/models/comment';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'comment-list',
@@ -8,7 +9,12 @@ import { Comments } from 'src/app/models/comment';
 })
 export class CommentListComponent implements OnInit {
 
-  @Input() comments: Comments | null = null
+  @Input() comments: Comments | null | undefined = null
+  @Input() loggedUser: User | null = null
+  @Input() isReplies: boolean = false
+
+  @Output() commentUpdated = new EventEmitter<Comment>()
+  @Output() commentRemoved = new EventEmitter<number | string>()
 
   constructor() { }
 

@@ -10,7 +10,10 @@
 html {
     line-height: lh(26px);
     height: 100%;
-    color: $very-dark-blue;
+    color: $grayish-blue;
+    // color: $very-dark-blue;
+    background-color: $very-light-gray
+    ;
 }
 
 body {

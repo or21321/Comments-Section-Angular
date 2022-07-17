@@ -14,6 +14,9 @@ export class UserService {
   private _users$ = new BehaviorSubject<User[]>([])
   public users$ = this._users$.asObservable()
 
+  private _loggedUser$ = new BehaviorSubject<User | null>(null)
+  public loggedUser$ = this._loggedUser$.asObservable()
+
   constructor(private http: HttpClient, private utilService: UtilService) {
   }
 
@@ -62,6 +65,22 @@ export class UserService {
     //return an observable
     if (!user) return throwError(`User not found with id ${id}`)
     return of(user) //: Promise.resolve(null)//Observable.throw(`User id ${id} not found!`)
+  }
+
+  public login(id: number): void | Observable<string> {
+    try {
+      console.log('id', id);
+      
+      if (!id) return this._loggedUser$.next(null)
+
+      const user = this._usersDb.find(user => user.id == id)
+      if (!user) return throwError(`User not found with id ${id}`)
+
+      this._loggedUser$.next(user)
+    } catch (err) {
+      console.log(err);
+      throw err
+    }
   }
 
   private _saveUsersToStorage() {
