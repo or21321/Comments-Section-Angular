@@ -1,0 +1,40 @@
+@import "../../styles/setup/variables";
+
+.delete-confirm {
+    max-width: 30%;
+    min-width: 255px;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-rows: 50px 1fr 65px;
+
+    > * {
+        grid-column: 2/3;
+    }
+
+    h3 {
+        color: $dark-blue;
+        margin: 0;
+    }
+    p {
+        color: $grayish-blue;
+    }
+    div {
+        gap: 10px;
+
+        button {
+            font-weight: 400;
+            border: unset;
+            color: #ffffff;
+            padding: 4px 10px;
+            height: 85%;
+            border-radius: 10px;
+
+            &:first-child {
+                background-color: $grayish-blue;
+            }
+            &:last-child {
+                background-color: $soft-red;
+            }
+        }
+    }
+}

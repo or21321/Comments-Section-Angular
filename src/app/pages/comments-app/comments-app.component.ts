@@ -18,6 +18,7 @@ export class CommentsAppComponent implements OnInit {
   comments$: Observable<Comments>
   // comments: Comments | null = null
   newComment: Comment | null = null
+  commentIdForRemoval: string | number | null = null
 
   constructor(private commentService: CommentService, private userService: UserService) {
     this.comments$ = this.commentService.comments$
@@ -44,9 +45,14 @@ export class CommentsAppComponent implements OnInit {
     }
   }
 
-  commentRemoved(id: number | string) {
-    console.log('commentRemoved', id);
-    this.commentService.removeComment(id)
+  openDeleteConfirm(id: number | string) {
+    this.commentIdForRemoval = id
+  }
+
+  commentRemoved() {
+    if (!this.commentIdForRemoval) return
+    this.commentService.removeComment(this.commentIdForRemoval)
+    this.commentIdForRemoval = null
   }
 
   commentAdded(commentAddObj: CommentAddObj) {
