@@ -73,9 +73,11 @@ export class CommentService {
   }
 
   private _getCommentsWithHierarchy(comments: Comments): Comments {
+    console.log('comment', comments.length);
+
     const commentsWithHierarchy: Comments = []
     const commentsCopy: Comments = JSON.parse(JSON.stringify(comments))
-    // Build first node:
+    // Build root node:
     commentsCopy.forEach((comment) => {
       // Create replies for each comment (could be better inside the pipe)
       comment.replies = []
@@ -88,41 +90,78 @@ export class CommentService {
     })
 
     let count = 0
-    while (commentsCopy.length && count < 50) {
-      commentsCopy.forEach(comment => {
-        // Two problems here: using any & support a specific depth of replies instead of using a recursion
-        let parentComment: any
+    while (commentsCopy.length && count < 1000 ) {
+      console.log('commentsCopy.length', commentsCopy.length);
+
+      for (var i = 0; i < commentsCopy.length; i++) {
+        const comment = commentsCopy[i]
+
+        // Two problems here: using any & support only a specific depth of replies (4) instead of using a recursion
+        let parentComment: undefined | Comment = this._getParentCommentRecursive(comment, commentsWithHierarchy)
+
         if (!parentComment) {
-          commentsWithHierarchy.forEach(c => {
-            if (c.id === comment.parentCommentId) parentComment = c
-            else if (c?.replies?.length) {
-              c.replies.forEach(reply => {
-                if (reply.id === comment.parentCommentId) parentComment = c
-                else if (reply?.replies?.length) {
-                  reply.replies.forEach(reply => {
-                    if (reply.id === comment.parentCommentId) parentComment = c
-                  })
-                }
-              })
-            }
-
-          })
+          count++
+          continue
         }
-
-        if (!parentComment) return
         parentComment.replies?.push(comment)
 
         const childCommentIdx = commentsCopy.findIndex(c => c.id === comment.id)
         commentsCopy.splice(childCommentIdx, 1)
-      })
-      count++
+        count++
+      }
+      // commentsCopy.forEach(comment => {
+      // })
     }
 
     console.log('commentsWithHierarchy', commentsWithHierarchy);
-    console.log(count, comments);
+    console.log(count, commentsCopy);
 
     return commentsWithHierarchy
   }
+
+  _getParentCommentRecursive(comment: Comment, commentsWithHierarchy: Comments): Comment | undefined {
+    let parentComment
+
+    for (var i = 0; i < commentsWithHierarchy.length; i++) {
+      const currComment = commentsWithHierarchy[i]
+
+      if (currComment.id === comment.parentCommentId) {
+        parentComment = currComment
+        break
+      }
+      else if (currComment?.replies?.length) {
+        parentComment = this._getCommentParentFromReplies(comment, currComment)
+        if (parentComment) break
+      }
+    }
+    // commentsWithHierarchy.forEach(c => {
+    // })
+
+    return parentComment
+  }
+
+  private _getCommentParentFromReplies(comment: Comment, commentWithReplies: Comment): Comment | undefined {
+    let parentComment: Comment | undefined
+    const { replies } = commentWithReplies
+    if (!replies) return undefined
+
+    for (var i = 0; i < replies.length; i++) {
+      const currReply = replies[i]
+      if (currReply.id === comment.parentCommentId) {
+        parentComment = currReply
+        break
+      }
+      else if (currReply.replies?.length) {
+        parentComment = this._getParentCommentRecursive(comment, currReply.replies)
+        if (parentComment) break
+      }
+    }
+    // commentWithReplies.replies?.forEach(reply => {
+    // })
+
+    return parentComment
+  }
+
   private _getCommentsWithUsers(comments: Comments) {
     let users: Users
     this.userService.users$.subscribe(_ => users = _)
@@ -184,11 +223,12 @@ export class CommentService {
     this._commentsDb = this._commentsDb.filter(comment => {
       // console.log(comment.id !== id);
       // console.log(comment.parentCommentId === id);
-      console.log(comment.parentCommentId, id);
-      console.log(comment.parentCommentId === id);
-
 
       return (comment.id !== id)
+    }).filter(comment => {
+      console.log(comment.parentCommentId, id);
+      console.log(comment.parentCommentId !== id);
+      return comment.parentCommentId !== id
     })
     console.log('this._commentsDb', this._commentsDb);
 

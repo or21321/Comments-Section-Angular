@@ -12,6 +12,7 @@
                 <button class="action-btn delete" (click)="commentRemoved.emit(comment?.id)">Delete</button>
                 <button class="action-btn" (click)="isEditOn = true">Edit</button>
             </div>
+            {{comment?.id}}-{{comment?.parentCommentId}}
         </header>
         <p *ngIf="!isEditOn; else contenteditable">{{comment?.txt}}</p>
         <ng-template #contenteditable>

@@ -1,8 +1,13 @@
 .main-layout {
     display: grid;
-    // grid-template-columns: $layoutPadding 1fr $layoutPadding;
     grid-template-columns: 1fr 50% 1fr;
-    // justify-items: center;
+    @include for-narrow-layout {
+        grid-template-columns: 1fr 80% 1fr;
+    }
+    @include for-small-mobile-layout {
+        grid-template-columns: 1fr minmax(350px, 90%) 1fr;
+        flex-wrap: wrap;
+    }
 
     > * {
         grid-column: 2;
