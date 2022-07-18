@@ -208,7 +208,8 @@ export class CommentService {
   }
 
   private _updateComment(comment: Comment) {
-    this._commentsDb = this._commentsDb.map(c => comment.id === c.id ? comment : c)
+    const updatedComment: Comment = { ...comment, createdAt: Date.now().toString() }
+    this._commentsDb = this._commentsDb.map(c => comment.id === c.id ? updatedComment : c)
 
     this._sendComments(this._commentsDb)
     this._saveCommentsToStorage()

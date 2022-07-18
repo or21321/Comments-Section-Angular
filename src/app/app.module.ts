@@ -10,6 +10,7 @@ import { CommentListComponent } from './cmps/comment-list/comment-list.component
 import { CommentPreviewComponent } from './cmps/comment-preview/comment-preview.component';
 import { CommentAddComponent } from './cmps/comment-add/comment-add.component';
 import { DeleteConfirmComponent } from './cmps/delete-confirm/delete-confirm.component';
+import { MomentPipe } from './pipes/moment.pipe';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DeleteConfirmComponent } from './cmps/delete-confirm/delete-confirm.com
     CommentListComponent,
     CommentPreviewComponent,
     CommentAddComponent,
-    DeleteConfirmComponent
+    DeleteConfirmComponent,
+    MomentPipe
   ],
   imports: [
     BrowserModule,

@@ -4,7 +4,7 @@
             <div class="comment-info flex align-center">
                 <img class="user-img" [src]="'../../../assets/users/' + comment?.miniUser?.id + '.jpg'">
                 <span class="display-name">{{comment?.miniUser?.displayName}}</span>
-                <span>Pipe</span>
+                <span>{{comment?.createdAt | moment}}</span>
             </div>
             <button (click)="isReplyOn = true" *ngIf="loggedUser && !isLoggedUserComment"
                 class="action-btn">Reply</button>
@@ -21,7 +21,8 @@
     </li>
     <comment-add (commentAdded)="replyAdded.emit($event)" *ngIf="isReplyOn" [isReply]="true" [loggedUser]="loggedUser"
         [parentCommentId]="comment?.parentCommentId"></comment-add>
-    <comment-list (replyAdded)="replyAdded.emit($event)" (commentRemoved)="commentRemoved.emit($event)" (commentUpdated)="commentUpdated.emit($event)"
-        *ngIf="comment?.replies?.length" [isReplies]="true" [loggedUser]="loggedUser" [comments]="comment?.replies">
+    <comment-list (replyAdded)="replyAdded.emit($event)" (commentRemoved)="commentRemoved.emit($event)"
+        (commentUpdated)="commentUpdated.emit($event)" *ngIf="comment?.replies?.length" [isReplies]="true"
+        [loggedUser]="loggedUser" [comments]="comment?.replies">
     </comment-list>
 </section>
