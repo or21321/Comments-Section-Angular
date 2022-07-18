@@ -23,7 +23,6 @@ export class CommentAddComponent implements OnInit {
 
   addComment(txt: string) {
     const parentCommentId = this.parentCommentId
-    console.log('HEYYYY', parentCommentId);
     this.commentAdded.emit({ txt, parentCommentId })
   }
 

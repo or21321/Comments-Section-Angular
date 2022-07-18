@@ -1,6 +1,6 @@
-<section class="comment-preview-container">
+<section *ngIf="!comment?.deletedAt" class="comment-preview-container">
     <li class="comment-preview">
-        <header class="flex justify-between">
+        <header class="flex justify-between wrap">
             <div class="comment-info flex align-center">
                 <img class="user-img" [src]="'../../../assets/users/' + comment?.miniUser?.id + '.jpg'">
                 <span class="display-name">{{comment?.miniUser?.displayName}}</span>
@@ -9,10 +9,10 @@
             <button (click)="isReplyOn = true" *ngIf="loggedUser && !isLoggedUserComment"
                 class="action-btn">Reply</button>
             <div *ngIf="isLoggedUserComment" class="user-actions">
-                <button class="action-btn delete" (click)="commentRemoved.emit(comment?.id)">Delete</button>
+                <button class="action-btn delete" (click)="commentRemoved.emit(comment)">Delete</button>
                 <button class="action-btn" (click)="isEditOn = true">Edit</button>
             </div>
-            {{comment?.id}}-{{comment?.parentCommentId}}
+            <!-- {{comment?.id}}-{{comment?.parentCommentId}} -->
         </header>
         <p *ngIf="!isEditOn; else contenteditable">{{comment?.txt}}</p>
         <ng-template #contenteditable>
@@ -21,7 +21,7 @@
         </ng-template>
     </li>
     <comment-add (commentAdded)="replyAdded.emit($event)" *ngIf="isReplyOn" [isReply]="true" [loggedUser]="loggedUser"
-        [parentCommentId]="comment?.parentCommentId"></comment-add>
+        [parentCommentId]="comment?.id"></comment-add>
     <comment-list (replyAdded)="replyAdded.emit($event)" (commentRemoved)="commentRemoved.emit($event)"
         (commentUpdated)="commentUpdated.emit($event)" *ngIf="comment?.replies?.length" [isReplies]="true"
         [loggedUser]="loggedUser" [comments]="comment?.replies">

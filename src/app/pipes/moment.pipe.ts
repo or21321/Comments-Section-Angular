@@ -26,7 +26,9 @@ export class MomentPipe implements PipeTransform {
     } else if (timePassedInSecs <= DAY) {
       return (timePassedInSecs / (60 * 60)).toFixed(0) + ' ' + 'שעות'
     } else {
-      const date = new Date(Date.parse(value))
+      // const date = new Date(Date.parse(value))
+      const date = new Date(+value)
+      
       return `${date.getDay()}/${date.getMonth()}/${date.getFullYear()}`
     }
   }

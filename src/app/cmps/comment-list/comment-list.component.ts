@@ -14,7 +14,7 @@ export class CommentListComponent implements OnInit {
   @Input() isReplies: boolean = false
 
   @Output() commentUpdated = new EventEmitter<Comment>()
-  @Output() commentRemoved = new EventEmitter<number | string>()
+  @Output() commentRemoved = new EventEmitter<Comment | null>()
   @Output() replyAdded = new EventEmitter<CommentAddObj>()
 
   constructor() { }

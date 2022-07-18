@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
   onUserSelect(userId: number | null) {
     try {
       if (!userId) return
-      console.log('onUserSelct', userId);
       this.userService.login(userId)
     } catch (err) {
       console.log(err);

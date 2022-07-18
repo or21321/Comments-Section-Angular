@@ -4,5 +4,5 @@
     </comment-list>
     <comment-add [newComment]="newComment" (commentAdded)="commentAdded($event)" *ngIf="loggedUser"
         [loggedUser]="loggedUser"></comment-add>
-    <delete-confirm (delete)="commentRemoved()" (cancel)="commentIdForRemoval=null" *ngIf="commentIdForRemoval"></delete-confirm>
+    <delete-confirm (delete)="commentRemoved()" (cancel)="commentForRemoval=null" *ngIf="commentForRemoval"></delete-confirm>
 </section>

@@ -25,7 +25,6 @@ export class UserService {
     const usersFromStorage = this.utilService.loadFromStorage('usersDb')
 
     if (usersFromStorage) {
-      console.log('usersFromStorage', usersFromStorage);
       this._usersDb = usersFromStorage
       this._sendUsers(this._usersDb)
     } else {
@@ -47,8 +46,6 @@ export class UserService {
       // })
     ).subscribe({
       next: (users: Users) => {
-        console.log('_getUsersFromJson', users);
-
         this._usersDb = users
         this._sendUsers(users)
         this._saveUsersToStorage()
@@ -69,8 +66,6 @@ export class UserService {
 
   public login(id: number): void | Observable<string> {
     try {
-      console.log('id', id);
-      
       if (!id) return this._loggedUser$.next(null)
 
       const user = this._usersDb.find(user => user.id == id)

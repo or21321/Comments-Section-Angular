@@ -13,7 +13,7 @@ export class CommentPreviewComponent implements OnInit {
   @Input() loggedUser: User | null = null
 
   @Output() commentUpdated = new EventEmitter<Comment>()
-  @Output() commentRemoved = new EventEmitter<number | string>()
+  @Output() commentRemoved = new EventEmitter<Comment | null>()
   @Output() replyAdded = new EventEmitter<CommentAddObj>()
 
   isEditOn: boolean = false

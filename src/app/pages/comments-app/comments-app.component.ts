@@ -18,18 +18,10 @@ export class CommentsAppComponent implements OnInit {
   comments$: Observable<Comments>
   // comments: Comments | null = null
   newComment: Comment | null = null
-  commentIdForRemoval: string | number | null = null
+  commentForRemoval: Comment | null = null
 
   constructor(private commentService: CommentService, private userService: UserService) {
     this.comments$ = this.commentService.comments$
-    // this.commentService.comments$.subscribe((comments) => {
-    //   // let commentsWithUsers = this._getCommentsWithUsers(comments)
-    //   // commentsWithUsers = this._getCommentsWithHierarchy(commentsWithUsers)
-    //   this.comments = commentsWithUsers
-    // },
-    //   err => console.log(err),
-    //   () => console.log('comments$ Complete!')
-    // )
   }
 
   ngOnInit(): void {
@@ -38,33 +30,31 @@ export class CommentsAppComponent implements OnInit {
 
   async commentUpdated(comment: Comment) {
     try {
-      console.log('commentUpdated', comment);
       await this.commentService.saveComment(comment).toPromise()
     } catch (err) {
       console.log(err);
     }
   }
 
-  openDeleteConfirm(id: number | string) {
-    this.commentIdForRemoval = id
+  openDeleteConfirm(comment: Comment | null) {
+    this.commentForRemoval = comment
   }
 
   commentRemoved() {
-    if (!this.commentIdForRemoval) return
-    this.commentService.removeComment(this.commentIdForRemoval)
-    this.commentIdForRemoval = null
+    if (!this.commentForRemoval) return
+    this.commentService.removeComment(this.commentForRemoval)
+    this.commentForRemoval = null
   }
 
   commentAdded(commentAddObj: CommentAddObj) {
-    console.log('HEY');
     const { txt, parentCommentId } = commentAddObj
-    console.log('parentCommentId', parentCommentId);
+
     // TS Fix:
     if (!this.loggedUser) return
 
     const newComment: Comment = {
       parentCommentId: parentCommentId || null, ownerId: this.loggedUser?.id, txt,
-      createdAt: '' + Date.now(), deletedAt: ''
+      createdAt: Date.now().toString(), deletedAt: ''
     }
 
     this.commentService.saveComment(newComment)

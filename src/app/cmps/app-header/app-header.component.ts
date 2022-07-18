@@ -21,7 +21,6 @@ export class AppHeaderComponent implements OnInit {
   }
 
   selectUser() {
-    console.log(this.loggedUserId);
     this.onUserSelect.emit(this.loggedUserId)
   }
 

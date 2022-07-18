@@ -21,7 +21,7 @@ import { MomentPipe } from './pipes/moment.pipe';
     CommentPreviewComponent,
     CommentAddComponent,
     DeleteConfirmComponent,
-    MomentPipe
+    MomentPipe,
   ],
   imports: [
     BrowserModule,
