@@ -1,4 +1,4 @@
-# CommentsSection
+# Comments-Section
 
 <p>Deployed: https://or21321.github.io/Comments-Section-Angular/</p>
 
