@@ -1,27 +1,14 @@
 # CommentsSection
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 12.2.1.
+<p>Deployed: https://or21321.github.io/Comments-Section-Angular/</p>
 
-## Development server
+<p>Comments-Section is a comments application, which allows the user to select a user to login to from the users list, and then add a new comment / reply to an existing comment.</p>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+<p>The comments are sorted by their creation time.</p>
+<p>Each user can edit his own comments. Comment creation preperty is updated when edited.</p>
+<p>User can delete his own comments, deleting also the comment's replies, with a delete confirm popup.</p>
+<p>Responsive designed, abit more styling needed but 90% is done.</p>
+<p>Created at is formatted and presented to the user using a custom pipe made by me.</p>
+<p>The data is read from a json file once when app loads, the saved to localStorage (survives through reloads of the page).</p>
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+<p>Built using Angular / Typescript / rxjs</p>
