@@ -2,7 +2,7 @@
     <li class="comment-preview">
         <header class="flex justify-between wrap">
             <div class="comment-info flex align-center">
-                <img class="user-img" [src]="'../../../assets/users/' + comment?.miniUser?.id + '.jpg'">
+                <img class="user-img" [src]="'assets/users/' + comment?.miniUser?.id + '.jpg'">
                 <span class="display-name">{{comment?.miniUser?.displayName}}</span>
                 <span>{{comment?.createdAt | moment}}</span>
             </div>
