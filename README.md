@@ -8,7 +8,7 @@
 <p>Each user can edit his own comments. Comment creation preperty is updated when edited.</p>
 <p>User can delete his own comments, deleting also the comment's replies, with a delete confirm popup.</p>
 <p>Responsive designed, abit more styling needed but 90% is done.</p>
-<p>Created at is formatted and presented to the user using a custom pipe made by me.</p>
+<p>Comment's createdAt property is formatted and presented to the user using a custom pipe made by me.</p>
 <p>The data is read from a json file once when app loads, the saved to localStorage (survives through reloads of the page).</p>
 
 <p>Built using Angular / Typescript / rxjs</p>
