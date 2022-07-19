@@ -11,4 +11,6 @@
 <p>Comment's createdAt property is formatted and presented to the user using a custom pipe made by me.</p>
 <p>The data is read from a json file once when app loads, the saved to localStorage (survives through reloads of the page).</p>
 
-<p>Built using Angular / Typescript / rxjs</p>
+<p>Built using Angular / Typescript / rxjs.</p>
+
+<p>Had lots of fun building this app, thank you Oren! :))</p>
