@@ -1,6 +1,6 @@
 <section [class]="{reply: isReply}" class="comment-add">
     <form (submit)="addComment(input.value)">
-        <img class="user-img" [src]="'../../../assets/users/' + loggedUser?.id + '.jpg'">
+        <img class="user-img" [src]="'assets/users/' + loggedUser?.id + '.jpg'">
         <input #input type="text" placeholder="Add a comment...">
         <button>SEND</button>
     </form>
